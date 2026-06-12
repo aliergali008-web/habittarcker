@@ -1,22 +1,20 @@
 import { useState } from "react";
+import Avatar from "../components/Avatar";
+import { Bolt, Trophy } from "../components/Doodles";
 import Ring from "../components/Ring";
 import ScaleRow from "../components/ScaleRow";
 import type { Tab } from "../components/TabBar";
 import { daysUntil, today, todayHeading } from "../lib/dates";
 import { nextExam, suggestPlan } from "../lib/plan";
 import { dueReviews, isOverdue, passLabel } from "../lib/reviews";
-import { completeReview, saveCheckin, snoozeReview, useAppData } from "../store";
-
-const ENERGY = ["🪫", "😮‍💨", "😐", "🙂", "⚡"];
-const MOOD = ["😖", "😕", "😐", "🙂", "😄"];
-
-function greeting(): string {
-  const h = new Date().getHours();
-  if (h < 5) return "Up late.";
-  if (h < 12) return "Good morning.";
-  if (h < 18) return "Good afternoon.";
-  return "Good evening.";
-}
+import { focusScore } from "../lib/score";
+import {
+  completeReview,
+  saveCheckin,
+  setName,
+  snoozeReview,
+  useAppData,
+} from "../store";
 
 interface Props {
   go: (tab: Tab) => void;
@@ -29,9 +27,12 @@ export default function Today({ go }: Props) {
   const loggedTonight = data.logs.some((l) => l.date === date);
   const exam = nextExam(data.exams);
   const due = dueReviews(data.reviews);
+  const score = focusScore(data);
 
   const [energy, setEnergy] = useState<number | undefined>(checkin?.energy);
   const [mood, setMood] = useState<number | undefined>(checkin?.mood);
+  const [editingName, setEditingName] = useState(false);
+  const [draftName, setDraftName] = useState(data.settings.name ?? "");
 
   const pick = (e?: number, m?: number) => {
     setEnergy(e);
@@ -49,39 +50,72 @@ export default function Today({ go }: Props) {
   return (
     <div className="screen">
       <header className="hero">
-        <div>
-          <div className="eyebrow">{todayHeading()}</div>
-          <h1 className="screen-title">{greeting()}</h1>
-          {exam && (
-            <button className="exam-pill" onClick={() => go("exams")}>
-              🎯 {exam.name} in {daysUntil(exam.date)}d
-            </button>
-          )}
+        <div className="hero-id">
+          <Avatar />
+          <div>
+            {editingName ? (
+              <form
+                className="name-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setName(draftName);
+                  setEditingName(false);
+                }}
+              >
+                <input
+                  autoFocus
+                  value={draftName}
+                  onChange={(e) => setDraftName(e.target.value)}
+                  placeholder="Your name"
+                />
+                <button type="submit" className="btn-pill btn-pill-dark">
+                  Save
+                </button>
+              </form>
+            ) : (
+              <h1 className="hello" onClick={() => setEditingName(true)}>
+                Hello{data.settings.name ? `, ${data.settings.name}` : " there"}
+              </h1>
+            )}
+            <div className="hero-score">
+              <Bolt />
+              {score
+                ? `Focus score: ${score.score}`
+                : "Let's build your focus score"}
+            </div>
+          </div>
         </div>
-        <div className="glass glass-chip ring-chip" onClick={() => go("focus")}>
+        <button className="glass glass-chip ring-chip" onClick={() => go("focus")}>
           <Ring progress={goal ? minutes / goal : 0} />
           <div className="ring-text">
             <strong>{minutes}</strong>
             <span>of {goal}m</span>
           </div>
-        </div>
+        </button>
       </header>
+
+      <div className="date-row">
+        <span className="eyebrow">{todayHeading()}</span>
+        {exam && (
+          <button className="exam-pill" onClick={() => go("exams")}>
+            {exam.name} in {daysUntil(exam.date)}d
+          </button>
+        )}
+      </div>
 
       {!checkin && (
         <section className="card card-checkin">
-          <div className="card-title">Quick check-in</div>
+          <div className="card-title">How are you landing today?</div>
           <p className="card-sub">Two taps — the day plan adapts to it.</p>
           <div className="check-label">Energy</div>
           <ScaleRow
             value={energy}
-            emojis={ENERGY}
             labels={["empty", "charged"]}
             onChange={(v) => pick(v, mood)}
           />
           <div className="check-label">Mood</div>
           <ScaleRow
             value={mood}
-            emojis={MOOD}
             labels={["rough", "great"]}
             onChange={(v) => pick(energy, v)}
           />
@@ -89,10 +123,15 @@ export default function Today({ go }: Props) {
       )}
 
       {plan && (
-        <section className="card-dark">
-          <div className="kicker kicker-orange">Today's move</div>
-          <p className="plan-text">{plan.text}</p>
-          <div className="card-dark-foot">
+        <section className="hero-card">
+          <div className="hero-card-text">
+            <div className="kicker kicker-deep">Today's move</div>
+            <p className="plan-text">{plan.text}</p>
+          </div>
+          <div className="hero-card-art">
+            <Trophy />
+          </div>
+          <div className="hero-card-foot">
             <span className="plan-meta">{plan.meta}</span>
             <button
               className="round-btn"
@@ -145,13 +184,13 @@ export default function Today({ go }: Props) {
       )}
 
       <div className="tile-grid">
-        <div className="tile tile-peach">
+        <div className="tile tile-peach tile-blob-a">
           <div className="tile-value">{todaySessions.length}</div>
           <div className="tile-label">
             session{todaySessions.length === 1 ? "" : "s"} today
           </div>
         </div>
-        <div className="tile tile-lavender">
+        <div className="tile tile-lavender tile-blob-b">
           <div className="tile-value">
             {minutes >= 60
               ? `${Math.floor(minutes / 60)}h ${minutes % 60 ? (minutes % 60) + "m" : ""}`

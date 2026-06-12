@@ -1,23 +1,24 @@
 /* ---------------------------------------------------------------------------
-   StudyTracker design system v2
-   Warm paper, chunky rounded type, pastel tiles, charcoal accent cards,
-   and liquid-glass surfaces floating over soft color.
+   StudyTracker design system v3
+   Warm flat cream, chunky display type, color-blocked cards (lilac hero,
+   pastel tiles, charcoal pills), hand-drawn faces, liquid-glass accents.
 --------------------------------------------------------------------------- */
 
 :root {
   /* palette */
-  --bg: #f1e9db;
+  --bg: #f6efe2;
   --card: #fffdf8;
   --ink: #241f19;
   --ink-soft: #4d443a;
-  --muted: #93887a;
+  --muted: #988c7c;
   --hairline: rgba(36, 31, 25, 0.08);
 
   --orange: #e9712d;
   --orange-deep: #c25415;
   --peach: #f9d9b8;
-  --lavender: #d9cefa;
-  --lavender-deep: #5b48b4;
+  --lilac: #cabcf8;
+  --lilac-soft: #e2dafb;
+  --lilac-deep: #5b48b4;
   --mint: #cfe6c6;
   --mint-deep: #36693c;
   --butter: #f7e6ae;
@@ -27,6 +28,7 @@
   /* type */
   --rounded: "Nunito", ui-rounded, "SF Pro Rounded", -apple-system,
     BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --display: "Baloo 2", var(--rounded);
 
   /* shape */
   --radius: 26px;
@@ -87,47 +89,61 @@ textarea {
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.55;
+  filter: blur(80px);
+  opacity: 0.4;
 }
 
 .b1 {
   width: 340px;
   height: 340px;
   background: #ffb36b;
-  top: -90px;
-  right: -80px;
+  top: -110px;
+  right: -90px;
 }
 
 .b2 {
   width: 300px;
   height: 300px;
   background: #c2b2f5;
-  top: 36%;
-  left: -120px;
+  top: 38%;
+  left: -130px;
 }
 
 .b3 {
   width: 320px;
   height: 320px;
   background: #b5dcb1;
-  bottom: -100px;
-  right: -60px;
+  bottom: -120px;
+  right: -70px;
 }
 
 .glass {
   background: linear-gradient(
     150deg,
-    rgba(255, 255, 255, 0.62),
-    rgba(255, 255, 255, 0.26)
+    rgba(255, 255, 255, 0.66),
+    rgba(255, 255, 255, 0.3)
   );
   backdrop-filter: blur(22px) saturate(180%);
   -webkit-backdrop-filter: blur(22px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.75);
   box-shadow:
     0 10px 30px rgba(36, 31, 25, 0.12),
-    inset 0 1px 1px rgba(255, 255, 255, 0.85),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9),
     inset 0 -8px 24px rgba(255, 255, 255, 0.18);
+}
+
+.glass-dark {
+  background: linear-gradient(
+    150deg,
+    rgba(43, 36, 29, 0.88),
+    rgba(34, 28, 22, 0.82)
+  );
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 14px 34px rgba(36, 31, 25, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
 .glass-chip {
@@ -169,17 +185,18 @@ textarea {
 
 .eyebrow {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
 }
 
 .screen-title {
-  font-size: 34px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
   margin-top: 4px;
 }
 
@@ -193,8 +210,8 @@ textarea {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 12.5px;
+  font-weight: 800;
   letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--muted);
@@ -215,19 +232,72 @@ textarea {
   letter-spacing: 0;
 }
 
+.cap {
+  text-transform: capitalize;
+}
+
 /* ---- hero header ---- */
 
 .hero {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 18px;
+  gap: 12px;
+}
+
+.hero-id {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.hero-id svg {
+  flex-shrink: 0;
+}
+
+.hello {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  cursor: pointer;
+}
+
+.hero-score {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.name-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.name-form input {
+  width: 130px;
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  background: var(--card);
+  padding: 7px 10px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.name-form input:focus {
+  outline: none;
+  border-color: var(--orange);
 }
 
 .ring-chip {
   flex-shrink: 0;
-  margin-top: 6px;
 }
 
 .ring {
@@ -241,27 +311,35 @@ textarea {
 
 .ring-text strong {
   display: block;
+  font-family: var(--display);
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .ring-text span {
   font-size: 11.5px;
   color: var(--muted);
-  font-weight: 600;
+  font-weight: 700;
+}
+
+.date-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 18px 0 12px;
 }
 
 .exam-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-top: 10px;
   background: var(--charcoal);
   color: var(--on-charcoal);
   border-radius: 999px;
   padding: 7px 14px;
-  font-size: 13.5px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 800;
 }
 
 /* ---- cards ---- */
@@ -279,9 +357,11 @@ textarea {
 }
 
 .card-title {
+  font-family: var(--display);
   font-size: 19px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.01em;
+  line-height: 1.25;
 }
 
 .card-sub {
@@ -295,21 +375,47 @@ textarea {
 }
 
 .check-label {
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 12.5px;
+  font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
   margin-top: 16px;
 }
 
-.card-dark {
-  background: var(--charcoal);
-  color: var(--on-charcoal);
-  border-radius: var(--radius);
+/* the lilac hero card with the trophy */
+
+.hero-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(155deg, #d9cdfa, var(--lilac));
+  border-radius: 30px;
   padding: 20px;
   margin-top: 14px;
-  box-shadow: 0 14px 34px rgba(41, 35, 30, 0.3);
+  box-shadow: 0 14px 34px rgba(122, 101, 211, 0.3);
+}
+
+.hero-card-text {
+  position: relative;
+  z-index: 1;
+  max-width: 72%;
+}
+
+.hero-card-art {
+  position: absolute;
+  top: 6px;
+  right: -4px;
+  opacity: 0.95;
+}
+
+.hero-card-foot {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 16px;
 }
 
 .kicker {
@@ -323,29 +429,36 @@ textarea {
   color: #f0a26d;
 }
 
-.kicker-lavender {
-  color: var(--lavender-deep);
+.kicker-deep {
+  color: var(--lilac-deep);
 }
 
 .plan-text {
-  font-size: 19px;
+  font-family: var(--display);
+  font-size: 18.5px;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.32;
   margin-top: 8px;
   letter-spacing: -0.01em;
 }
 
 .plan-meta {
   font-size: 13px;
-  color: rgba(247, 241, 231, 0.65);
+  font-weight: 700;
+  color: rgba(36, 31, 25, 0.55);
 }
 
-.card-dark-foot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+.card-dark {
+  background: var(--charcoal);
+  color: var(--on-charcoal);
+  border-radius: var(--radius);
+  padding: 20px;
   margin-top: 14px;
+  box-shadow: 0 14px 34px rgba(41, 35, 30, 0.3);
+}
+
+.card-dark .plan-meta {
+  color: rgba(247, 241, 231, 0.65);
 }
 
 .round-btn {
@@ -381,7 +494,7 @@ textarea {
   border-radius: 999px;
   padding: 15px 22px;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
   transition: transform 0.12s ease, opacity 0.12s ease;
 }
 
@@ -425,7 +538,7 @@ textarea {
   border-radius: 999px;
   padding: 9px 16px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
   transition: transform 0.12s ease;
 }
 
@@ -443,7 +556,12 @@ textarea {
   color: var(--ink-soft);
 }
 
-/* ---- pastel tiles ---- */
+.btn-pill-light {
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--ink-soft);
+}
+
+/* ---- pastel tiles (blobby corners like the refs) ---- */
 
 .tile-grid {
   display: grid;
@@ -453,13 +571,20 @@ textarea {
 }
 
 .tile {
-  border-radius: var(--radius);
   padding: 18px 16px 14px;
-  min-height: 96px;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   box-shadow: var(--shadow);
+}
+
+.tile-blob-a {
+  border-radius: 34px 34px 12px 34px;
+}
+
+.tile-blob-b {
+  border-radius: 34px 34px 34px 12px;
 }
 
 .tile-peach {
@@ -467,7 +592,7 @@ textarea {
 }
 
 .tile-lavender {
-  background: linear-gradient(160deg, #e6defc, var(--lavender));
+  background: linear-gradient(160deg, #e6defc, var(--lilac));
 }
 
 .tile-mint {
@@ -479,8 +604,9 @@ textarea {
 }
 
 .tile-value {
-  font-size: 30px;
-  font-weight: 800;
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 700;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
   line-height: 1.05;
@@ -488,12 +614,12 @@ textarea {
 
 .tile-label {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: rgba(36, 31, 25, 0.55);
   margin-top: 3px;
 }
 
-/* ---- emoji scale ---- */
+/* ---- face scale ---- */
 
 .scale-row {
   display: flex;
@@ -506,7 +632,7 @@ textarea {
   aspect-ratio: 1.05;
   border-radius: 18px;
   border: 1px solid var(--hairline);
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.75);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -515,16 +641,9 @@ textarea {
   transition: all 0.15s ease;
 }
 
-.scale-face {
-  font-size: 24px;
-  line-height: 1;
-  filter: grayscale(0.6);
-  transition: filter 0.15s ease, transform 0.15s ease;
-}
-
 .scale-dot small {
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--muted);
   letter-spacing: 0.02em;
 }
@@ -533,11 +652,7 @@ textarea {
   background: var(--charcoal);
   border-color: var(--charcoal);
   box-shadow: 0 6px 16px rgba(41, 35, 30, 0.3);
-}
-
-.scale-dot.active .scale-face {
-  filter: none;
-  transform: scale(1.15);
+  transform: translateY(-2px);
 }
 
 .scale-dot.active small {
@@ -571,10 +686,6 @@ textarea {
   letter-spacing: -0.01em;
 }
 
-.cap {
-  text-transform: capitalize;
-}
-
 .review-topic {
   font-weight: 700;
   color: rgba(36, 31, 25, 0.65);
@@ -582,7 +693,7 @@ textarea {
 
 .review-meta {
   font-size: 12.5px;
-  font-weight: 600;
+  font-weight: 700;
   color: rgba(36, 31, 25, 0.5);
 }
 
@@ -611,7 +722,7 @@ textarea {
 .toggle-row strong {
   display: block;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .toggle-row small {
@@ -694,7 +805,7 @@ textarea {
   border-radius: 999px;
   padding: 8px 15px;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
   transition: all 0.13s ease;
 }
 
@@ -716,6 +827,45 @@ textarea {
   color: var(--muted);
 }
 
+/* ---- focus score block ---- */
+
+.score-block {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.score-big {
+  font-family: var(--display);
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.score-cap {
+  font-size: 22px;
+  color: var(--muted);
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.score-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.wrapped-btn {
+  padding: 12px 18px;
+  font-size: 14.5px;
+  margin-bottom: 6px;
+}
+
 /* ---- mood calendar ---- */
 
 .mood-grid {
@@ -727,7 +877,7 @@ textarea {
 .mood-head {
   text-align: center;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--muted);
   text-transform: uppercase;
   padding-bottom: 2px;
@@ -735,12 +885,11 @@ textarea {
 
 .mood-cell {
   aspect-ratio: 1;
-  border-radius: 12px;
+  border-radius: 13px;
   background: rgba(36, 31, 25, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 17px;
 }
 
 .mood-cell.future {
@@ -754,7 +903,7 @@ textarea {
 }
 
 .mood-cell.m1 {
-  background: #f6b8a4;
+  background: #f4ad9c;
 }
 
 .mood-cell.m2 {
@@ -770,16 +919,16 @@ textarea {
 }
 
 .mood-cell.m5 {
-  background: #b9e3b6;
+  background: #b3e0b0;
 }
 
-/* ---- golden hours bars ---- */
+/* ---- golden hours bars (cream chart like the refs) ---- */
 
 .bars {
   display: flex;
   align-items: flex-end;
   gap: 10px;
-  height: 150px;
+  height: 170px;
   margin-top: 18px;
 }
 
@@ -793,35 +942,39 @@ textarea {
 .bar-track {
   flex: 1;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.bar-value {
+  font-family: var(--display);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  background: rgba(36, 31, 25, 0.06);
+  border-radius: 999px;
+  padding: 1px 8px;
 }
 
 .bar-fill {
   width: 100%;
-  border-radius: 12px;
-  background: rgba(247, 241, 231, 0.22);
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 5px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ecdcc0, #e2cba4);
   transition: height 0.4s cubic-bezier(0.2, 0.8, 0.3, 1);
-}
-
-.bar-fill span {
-  font-size: 11px;
-  font-weight: 800;
-  color: rgba(247, 241, 231, 0.85);
 }
 
 .bar-fill.best {
   background: linear-gradient(180deg, #f08a45, var(--orange));
+  box-shadow: 0 6px 14px rgba(233, 113, 45, 0.35);
 }
 
 .bar-label {
   text-align: center;
   font-size: 11px;
-  font-weight: 700;
-  color: rgba(247, 241, 231, 0.55);
+  font-weight: 800;
+  color: var(--muted);
   margin-top: 8px;
   line-height: 1.1;
 }
@@ -829,7 +982,7 @@ textarea {
 .bar-label small {
   display: block;
   font-size: 9px;
-  font-weight: 600;
+  font-weight: 700;
   opacity: 0.7;
 }
 
@@ -840,6 +993,7 @@ textarea {
   border-radius: var(--radius-sm);
   padding: 12px 14px;
   font-size: 14px;
+  font-weight: 600;
   margin-bottom: 14px;
 }
 
@@ -854,7 +1008,7 @@ textarea {
   width: 84px;
   flex-shrink: 0;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: capitalize;
   white-space: nowrap;
   overflow: hidden;
@@ -872,7 +1026,7 @@ textarea {
 .subject-fill {
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, #c2b2f5, var(--lavender-deep));
+  background: linear-gradient(90deg, #c2b2f5, var(--lilac-deep));
 }
 
 .subject-min {
@@ -880,7 +1034,7 @@ textarea {
   flex-shrink: 0;
   text-align: right;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
@@ -914,8 +1068,9 @@ textarea {
 }
 
 .density-headline {
-  font-size: 24px;
-  font-weight: 800;
+  font-family: var(--display);
+  font-size: 23px;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 
@@ -927,15 +1082,15 @@ textarea {
 /* ---- insight card ---- */
 
 .insight-card {
-  background: linear-gradient(160deg, #e6defc, var(--lavender));
+  background: linear-gradient(160deg, #e6defc, var(--lilac));
   border-radius: var(--radius);
   padding: 18px;
   box-shadow: var(--shadow);
 }
 
 .insight-question {
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16.5px;
+  font-weight: 700;
   line-height: 1.45;
   margin-top: 8px;
 }
@@ -981,7 +1136,7 @@ textarea {
 /* ---- timer ---- */
 
 .timer-glass {
-  border-radius: var(--radius);
+  border-radius: 30px;
   padding: 34px 20px 22px;
   margin-top: 16px;
   display: flex;
@@ -995,18 +1150,19 @@ textarea {
 }
 
 .timer-clock {
-  font-size: 76px;
-  font-weight: 800;
+  font-family: var(--display);
+  font-size: 78px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   line-height: 1;
 }
 
 .timer-state {
-  margin-top: 10px;
+  margin-top: 8px;
   color: var(--ink-soft);
   font-size: 14.5px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .timer-controls {
@@ -1037,11 +1193,16 @@ textarea {
   margin-top: 10px;
 }
 
+.exam-body {
+  flex: 1;
+  min-width: 0;
+}
+
 .exam-badge {
   flex-shrink: 0;
   width: 62px;
   height: 62px;
-  border-radius: 20px;
+  border-radius: 22px 22px 22px 8px;
   background: linear-gradient(160deg, #fbe3c8, var(--peach));
   display: flex;
   flex-direction: column;
@@ -1051,14 +1212,15 @@ textarea {
 }
 
 .exam-badge strong {
-  font-size: 22px;
-  font-weight: 800;
+  font-family: var(--display);
+  font-size: 23px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
 .exam-badge small {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: rgba(36, 31, 25, 0.5);
@@ -1082,8 +1244,41 @@ textarea {
 .exam-date {
   font-size: 13px;
   color: var(--muted);
-  font-weight: 600;
+  font-weight: 700;
   margin-top: 1px;
+}
+
+.ready-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.ready-track {
+  flex: 1;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(36, 31, 25, 0.07);
+  overflow: hidden;
+}
+
+.ready-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #9ed4a0, var(--mint-deep));
+}
+
+.ready-fill.low {
+  background: linear-gradient(90deg, #f3b08c, var(--orange));
+}
+
+.ready-pct {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
 }
 
 .past-row {
@@ -1108,7 +1303,7 @@ textarea {
 .field label {
   display: block;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--ink-soft);
   margin-bottom: 6px;
 }
@@ -1117,7 +1312,7 @@ textarea {
   width: 100%;
   border: 1px solid var(--hairline);
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   padding: 13px 15px;
   font-size: 16px;
 }
@@ -1127,7 +1322,7 @@ textarea {
   border-color: var(--orange);
 }
 
-/* ---- tab bar (floating liquid-glass pill) ---- */
+/* ---- tab bar (floating dark-glass pill like the refs) ---- */
 
 .tabbar {
   position: fixed;
@@ -1158,7 +1353,7 @@ textarea {
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  color: rgba(36, 31, 25, 0.5);
+  color: rgba(247, 241, 231, 0.55);
   padding: 2px 0;
 }
 
@@ -1179,18 +1374,18 @@ textarea {
 
 .tab-label {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.03em;
 }
 
 .tab.active {
-  color: var(--ink);
+  color: var(--on-charcoal);
 }
 
 .tab.active .tab-bubble {
-  background: var(--charcoal);
-  color: var(--on-charcoal);
-  box-shadow: 0 6px 14px rgba(41, 35, 30, 0.3);
+  background: var(--on-charcoal);
+  color: var(--charcoal);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
 }
 
 .tab-log-btn {
@@ -1204,7 +1399,7 @@ textarea {
   align-items: center;
   justify-content: center;
   margin: 0 6px;
-  box-shadow: 0 8px 20px rgba(233, 113, 45, 0.45);
+  box-shadow: 0 8px 20px rgba(233, 113, 45, 0.5);
   transition: transform 0.12s ease;
 }
 
@@ -1226,8 +1421,9 @@ textarea {
 }
 
 .empty-state .empty-title {
+  font-family: var(--display);
   font-size: 19px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--ink-soft);
   margin-bottom: 6px;
 }
@@ -1247,5 +1443,5 @@ textarea {
   border-radius: var(--radius-sm);
   padding: 13px 15px;
   font-size: 14.5px;
-  font-weight: 600;
+  font-weight: 700;
 }

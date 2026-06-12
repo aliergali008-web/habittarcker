@@ -77,8 +77,8 @@ function demoData() {
     checkins,
     sessions,
     exams: [
-      { id: uid(), name: "IELTS", date: plusDays(9) },
-      { id: uid(), name: "AS Maths Paper 1", date: plusDays(24) },
+      { id: uid(), name: "IELTS", date: plusDays(9), subject: "ielts" },
+      { id: uid(), name: "A-Level Chemistry", date: plusDays(24), subject: "chemistry" },
     ],
     reviews: [
       { id: uid(), subject: "math", topic: "Integration by parts", due: iso(dAgo(0)), step: 1, createdAt: Date.now() - 3 * 86400000 },
@@ -94,7 +94,7 @@ function demoData() {
         createdAt: Date.now() - 86400000,
       },
     ],
-    settings: { dailyGoalMin: 120 },
+    settings: { dailyGoalMin: 120, name: "Ali" },
   };
 }
 
@@ -123,7 +123,7 @@ const shot = async (name) => {
 const tab = (label) => page.click(`nav [aria-label="${label}"]`);
 
 await page.goto(BASE);
-await page.waitForSelector(".screen-title");
+await page.waitForSelector(".hello");
 await shot("01-today-checkin");
 
 // fill the morning check-in → plan card appears
@@ -145,7 +145,13 @@ await shot("05-focus-rate");
 
 await tab("Insights");
 await shot("06-insights-mood");
-await page.locator(".card-dark").scrollIntoViewIfNeeded();
+
+// the Wrapped card downloads as a PNG in headless (no share sheet)
+const dl = page.waitForEvent("download");
+await page.click('button:has-text("Share my week")');
+await (await dl).saveAs(`${OUT}/12-wrapped.png`);
+console.log("✓ 12-wrapped");
+await page.locator(".bars").scrollIntoViewIfNeeded();
 await page.evaluate(() => window.scrollBy(0, 170));
 await shot("07-insights-hours");
 await page.locator(".density-grid").scrollIntoViewIfNeeded();

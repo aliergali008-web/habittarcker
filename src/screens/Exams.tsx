@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { daysUntil, prettyDate, today } from "../lib/dates";
+import { readiness } from "../lib/readiness";
+import { subjectStats } from "../lib/stats";
 import { addExam, removeExam, uid, useAppData } from "../store";
 
 export default function Exams() {
   const data = useAppData();
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
+  const [subject, setSubject] = useState("");
   const [adding, setAdding] = useState(false);
+
+  const knownSubjects = subjectStats(data).map((s) => s.subject);
 
   const upcoming = [...data.exams]
     .filter((e) => daysUntil(e.date) >= 0)
@@ -17,9 +22,15 @@ export default function Exams() {
 
   const submit = () => {
     if (!name.trim() || !date) return;
-    addExam({ id: uid(), name: name.trim(), date });
+    addExam({
+      id: uid(),
+      name: name.trim(),
+      date,
+      subject: subject.trim() || undefined,
+    });
     setName("");
     setDate("");
+    setSubject("");
     setAdding(false);
   };
 
@@ -28,7 +39,7 @@ export default function Exams() {
       <div className="eyebrow">Exams</div>
       <h1 className="screen-title">What you're aiming at.</h1>
       <p className="screen-sub">
-        The daily plan adapts to whichever of these is closest.
+        Link an exam to a subject and the readiness meter tracks your prep.
       </p>
 
       {upcoming.length > 0 && (
@@ -36,15 +47,27 @@ export default function Exams() {
           <div className="section-label">Upcoming</div>
           {upcoming.map((exam) => {
             const days = daysUntil(exam.date);
+            const ready = readiness(data, exam);
             return (
               <div className="exam-card" key={exam.id}>
                 <div className={`exam-badge ${days <= 14 ? "soon" : ""}`}>
                   <strong>{days === 0 ? "now" : days}</strong>
                   {days > 0 && <small>days</small>}
                 </div>
-                <div>
+                <div className="exam-body">
                   <div className="exam-name">{exam.name}</div>
                   <div className="exam-date">{prettyDate(exam.date)}</div>
+                  {ready !== undefined && (
+                    <div className="ready-row">
+                      <div className="ready-track">
+                        <div
+                          className={`ready-fill ${ready < 40 ? "low" : ""}`}
+                          style={{ width: `${Math.max(4, ready)}%` }}
+                        />
+                      </div>
+                      <span className="ready-pct">{ready}%</span>
+                    </div>
+                  )}
                 </div>
               </div>
             );
@@ -79,6 +102,27 @@ export default function Exams() {
               min={today()}
               value={date}
               onChange={(e) => setDate(e.target.value)}
+            />
+          </div>
+          <div className="field">
+            <label>Subject (for the readiness meter)</label>
+            {knownSubjects.length > 0 && (
+              <div className="chip-row" style={{ marginBottom: 8 }}>
+                {knownSubjects.slice(0, 4).map((s) => (
+                  <button
+                    key={s}
+                    className={`chip ${subject.toLowerCase() === s ? "chip-on" : ""}`}
+                    onClick={() => setSubject(s)}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
+            <input
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              placeholder="math, ielts…"
             />
           </div>
           <div style={{ display: "flex", gap: 10, marginTop: 16 }}>

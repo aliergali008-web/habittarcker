@@ -36,6 +36,8 @@ export interface Exam {
   id: string;
   name: string;
   date: ISODate;
+  /** ties the exam to a studied subject so readiness can be computed */
+  subject?: string;
 }
 
 /**
@@ -64,6 +66,8 @@ export interface Insight {
 export interface Settings {
   /** daily focused-minutes goal */
   dailyGoalMin: number;
+  /** for the greeting and the Wrapped card */
+  name?: string;
 }
 
 export interface AppData {

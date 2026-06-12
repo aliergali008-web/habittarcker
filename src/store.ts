@@ -122,6 +122,10 @@ export function setDailyGoal(dailyGoalMin: number) {
   commit({ ...data, settings: { ...data.settings, dailyGoalMin } });
 }
 
+export function setName(name: string) {
+  commit({ ...data, settings: { ...data.settings, name: name.trim() } });
+}
+
 export function addInsight(insight: Insight) {
   commit({ ...data, insights: [...data.insights, insight] });
 }

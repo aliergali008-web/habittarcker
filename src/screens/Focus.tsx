@@ -4,8 +4,6 @@ import { today } from "../lib/dates";
 import { firstReview } from "../lib/reviews";
 import { addReview, saveSession, uid, useAppData } from "../store";
 
-const FOCUS_FACES = ["🌪️", "😵‍💫", "😐", "🙂", "🎯"];
-
 type Phase = "idle" | "running" | "paused" | "rate";
 
 export default function Focus() {
@@ -146,7 +144,6 @@ export default function Focus() {
           <div className="card-title">Focus quality</div>
           <ScaleRow
             value={focus}
-            emojis={FOCUS_FACES}
             labels={["scattered", "locked in"]}
             onChange={setFocus}
           />

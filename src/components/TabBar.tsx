@@ -67,7 +67,7 @@ export default function TabBar({ tab, onChange }: Props) {
 
   return (
     <nav className="tabbar">
-      <div className="tabbar-inner glass">
+      <div className="tabbar-inner glass-dark">
         {item("today")}
         {item("focus")}
         <button
