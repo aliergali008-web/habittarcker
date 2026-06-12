@@ -34,25 +34,21 @@ export default function Exams() {
       {upcoming.length > 0 && (
         <>
           <div className="section-label">Upcoming</div>
-          <div className="card">
-            {upcoming.map((exam) => {
-              const days = daysUntil(exam.date);
-              return (
-                <div className="exam-row" key={exam.id}>
-                  <div>
-                    <div className="exam-name">{exam.name}</div>
-                    <div className="exam-date">{prettyDate(exam.date)}</div>
-                  </div>
-                  <div className="exam-count">
-                    <div className={`exam-days ${days <= 14 ? "soon" : ""}`}>
-                      {days === 0 ? "today" : days}
-                    </div>
-                    {days > 0 && <div className="exam-days-label">days</div>}
-                  </div>
+          {upcoming.map((exam) => {
+            const days = daysUntil(exam.date);
+            return (
+              <div className="exam-card" key={exam.id}>
+                <div className={`exam-badge ${days <= 14 ? "soon" : ""}`}>
+                  <strong>{days === 0 ? "now" : days}</strong>
+                  {days > 0 && <small>days</small>}
                 </div>
-              );
-            })}
-          </div>
+                <div>
+                  <div className="exam-name">{exam.name}</div>
+                  <div className="exam-date">{prettyDate(exam.date)}</div>
+                </div>
+              </div>
+            );
+          })}
         </>
       )}
 
@@ -65,7 +61,7 @@ export default function Exams() {
       )}
 
       {adding ? (
-        <div className="card" style={{ marginTop: 20 }}>
+        <section className="card" style={{ marginTop: 20 }}>
           <div className="card-title">New exam</div>
           <div className="field">
             <label>Name</label>
@@ -98,35 +94,36 @@ export default function Exams() {
               Add exam
             </button>
           </div>
-        </div>
+        </section>
       ) : (
-        <div style={{ marginTop: 20 }}>
-          <button className="btn btn-ghost btn-block" onClick={() => setAdding(true)}>
-            Add an exam
-          </button>
-        </div>
+        <button
+          className="btn btn-ghost btn-block"
+          style={{ marginTop: 20 }}
+          onClick={() => setAdding(true)}
+        >
+          Add an exam
+        </button>
       )}
 
       {past.length > 0 && (
         <>
           <div className="section-label">Done</div>
-          <div className="card">
+          <section className="card">
             {past.map((exam) => (
-              <div className="exam-row" key={exam.id}>
+              <div className="past-row" key={exam.id}>
                 <div>
                   <div className="exam-name">{exam.name}</div>
                   <div className="exam-date">{prettyDate(exam.date)}</div>
                 </div>
                 <button
-                  className="btn btn-quiet"
-                  style={{ padding: "8px 14px", fontSize: 13 }}
+                  className="btn-pill btn-pill-quiet"
                   onClick={() => removeExam(exam.id)}
                 >
                   Remove
                 </button>
               </div>
             ))}
-          </div>
+          </section>
         </>
       )}
     </div>

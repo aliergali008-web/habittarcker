@@ -1,5 +1,5 @@
 import type { AppData, Insight } from "../types";
-import { uid } from "../store";
+import { uid } from "./uid";
 
 const MIN_LOGS = 8;
 const MIN_GROUP = 3;

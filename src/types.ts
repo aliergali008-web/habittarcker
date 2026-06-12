@@ -28,12 +28,28 @@ export interface Session {
   subject?: string;
   /** 1–5, rated at the end */
   focus?: number;
+  /** times the user left the app mid-session */
+  slips?: number;
 }
 
 export interface Exam {
   id: string;
   name: string;
   date: ISODate;
+}
+
+/**
+ * A scheduled memory review. Created when a study session ends,
+ * then re-scheduled along the forgetting curve (1 → 3 → 7 → 21 days).
+ */
+export interface Review {
+  id: string;
+  subject: string;
+  topic?: string;
+  due: ISODate;
+  /** index into REVIEW_GAPS — how many reviews are already done */
+  step: number;
+  createdAt: number;
 }
 
 export type InsightStatus = "open" | "confirmed" | "dismissed";
@@ -45,10 +61,17 @@ export interface Insight {
   createdAt: number;
 }
 
+export interface Settings {
+  /** daily focused-minutes goal */
+  dailyGoalMin: number;
+}
+
 export interface AppData {
   logs: EveningLog[];
   checkins: MorningCheckin[];
   sessions: Session[];
   exams: Exam[];
+  reviews: Review[];
   insights: Insight[];
+  settings: Settings;
 }

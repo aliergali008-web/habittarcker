@@ -1,12 +1,17 @@
 import { useSyncExternalStore } from "react";
+import { nextAfter, snoozedDue } from "./lib/reviews";
+import { uid } from "./lib/uid";
 import type {
   AppData,
   EveningLog,
   Exam,
   Insight,
   MorningCheckin,
+  Review,
   Session,
 } from "./types";
+
+export { uid };
 
 const STORAGE_KEY = "studytracker.v1";
 
@@ -15,14 +20,21 @@ const empty: AppData = {
   checkins: [],
   sessions: [],
   exams: [],
+  reviews: [],
   insights: [],
+  settings: { dailyGoalMin: 120 },
 };
 
 function load(): AppData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return empty;
-    return { ...empty, ...JSON.parse(raw) };
+    const parsed = JSON.parse(raw);
+    return {
+      ...empty,
+      ...parsed,
+      settings: { ...empty.settings, ...(parsed.settings ?? {}) },
+    };
   } catch {
     return empty;
   }
@@ -45,10 +57,6 @@ export function useAppData(): AppData {
     },
     () => data
   );
-}
-
-export function uid(): string {
-  return Math.random().toString(36).slice(2, 10);
 }
 
 // ---- mutations -------------------------------------------------------------
@@ -75,6 +83,43 @@ export function addExam(exam: Exam) {
 
 export function removeExam(id: string) {
   commit({ ...data, exams: data.exams.filter((e) => e.id !== id) });
+}
+
+export function addReview(review: Review) {
+  // one pending review per subject+topic is enough
+  const dup = data.reviews.some(
+    (r) =>
+      r.subject.toLowerCase() === review.subject.toLowerCase() &&
+      (r.topic ?? "") === (review.topic ?? "")
+  );
+  if (dup) return;
+  commit({ ...data, reviews: [...data.reviews, review] });
+}
+
+/** Mark a review done; schedules the next pass if the cycle isn't finished. */
+export function completeReview(id: string) {
+  const review = data.reviews.find((r) => r.id === id);
+  if (!review) return;
+  const rest = data.reviews.filter((r) => r.id !== id);
+  const next = nextAfter(review);
+  commit({ ...data, reviews: next ? [...rest, next] : rest });
+}
+
+export function snoozeReview(id: string) {
+  commit({
+    ...data,
+    reviews: data.reviews.map((r) =>
+      r.id === id ? { ...r, due: snoozedDue() } : r
+    ),
+  });
+}
+
+export function dropReview(id: string) {
+  commit({ ...data, reviews: data.reviews.filter((r) => r.id !== id) });
+}
+
+export function setDailyGoal(dailyGoalMin: number) {
+  commit({ ...data, settings: { ...data.settings, dailyGoalMin } });
 }
 
 export function addInsight(insight: Insight) {

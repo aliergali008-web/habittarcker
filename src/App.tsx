@@ -11,6 +11,11 @@ export default function App() {
 
   return (
     <div className="app">
+      <div className="bg-blobs" aria-hidden>
+        <div className="blob b1" />
+        <div className="blob b2" />
+        <div className="blob b3" />
+      </div>
       {tab === "today" && <Today go={setTab} />}
       {tab === "focus" && <Focus />}
       {tab === "log" && <Log go={setTab} />}

@@ -79,6 +79,7 @@ export default function Log({ go }: Props) {
           </div>
           <ScaleRow
             value={parsed.mood}
+            emojis={["😖", "😕", "😐", "🙂", "😄"]}
             labels={["rough", "great"]}
             onChange={(mood) => setParsed({ ...parsed, mood })}
           />

@@ -3,7 +3,7 @@ export type Tab = "today" | "focus" | "log" | "insights" | "exams";
 const stroke = {
   fill: "none",
   stroke: "currentColor",
-  strokeWidth: 1.8,
+  strokeWidth: 1.9,
   strokeLinecap: "round",
   strokeLinejoin: "round",
 } as const;
@@ -36,10 +36,17 @@ const icons = {
 };
 
 const pencil = (
-  <svg viewBox="0 0 24 24" {...stroke} strokeWidth={1.9}>
+  <svg viewBox="0 0 24 24" {...stroke} strokeWidth={2.1}>
     <path d="M12 5v14M5 12h14" />
   </svg>
 );
+
+const labels: Record<Exclude<Tab, "log">, string> = {
+  today: "Today",
+  focus: "Focus",
+  insights: "Insights",
+  exams: "Exams",
+};
 
 interface Props {
   tab: Tab;
@@ -47,32 +54,31 @@ interface Props {
 }
 
 export default function TabBar({ tab, onChange }: Props) {
-  const item = (id: Tab, label: string) => (
+  const item = (id: Exclude<Tab, "log">) => (
     <button
       className={`tab ${tab === id ? "active" : ""}`}
+      aria-label={labels[id]}
       onClick={() => onChange(id)}
     >
-      {icons[id as keyof typeof icons]}
-      {label}
+      <span className="tab-bubble">{icons[id]}</span>
+      <span className="tab-label">{labels[id]}</span>
     </button>
   );
 
   return (
     <nav className="tabbar">
-      <div className="tabbar-inner">
-        {item("today", "Today")}
-        {item("focus", "Focus")}
-        <div className="tab tab-log">
-          <button
-            className="tab-log-btn"
-            aria-label="Evening log"
-            onClick={() => onChange("log")}
-          >
-            {pencil}
-          </button>
-        </div>
-        {item("insights", "Insights")}
-        {item("exams", "Exams")}
+      <div className="tabbar-inner glass">
+        {item("today")}
+        {item("focus")}
+        <button
+          className="tab-log-btn"
+          aria-label="Evening log"
+          onClick={() => onChange("log")}
+        >
+          {pencil}
+        </button>
+        {item("insights")}
+        {item("exams")}
       </div>
     </nav>
   );
